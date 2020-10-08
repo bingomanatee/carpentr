@@ -1,14 +1,15 @@
 Carpentr is a store/design pattern that exists to drastically reduce the number of actions required in a
-redux/saga/flow-patterned store. Instead of creating discrete actions for innumerable request/responses,
-collections are created that reflect the structure of the backend data source.
+redux/saga/flow-patterned store. It is an attempt to create a homogenous and open ended store of data 
+to prevent monotonous creation of actions and state for each data collection by managing a "map of maps"
+to store data in. 
 
-Requests and Queries are stored and processed by external subscribers so that it is easy for mock stores to
-be hooked up to Carpentr stores. put another way: Carpentr is a *registry* that expects the application to 
-satisfy pending requests; it has no specific source of information that it targets. You could hook a Carpentr
+Carpentr is a *registry* that expects the application to satisfy pending requests; 
+it has no specific source of information that it targets. You could hook a Carpentr
 system up to a REST based network, a local database, file system, github repo, etc. 
 
-To re-emphasize -- *Carpentr is not self contained*; it ceates requests, saves data and lets you populate collections,
-but it does *not* call REST endpoints, poll databases, etc; that is the responsibility of its *subscribers* 
+To re-emphasize -- *Carpentr is not self contained*; it records requests, 
+saves data and lets you populate collections, but it does *not* call REST endpoints, 
+poll databases, etc; that is the responsibility of its *subscribers* 
 
 ## Components of Carpentr
 
@@ -23,36 +24,16 @@ of database records (that have an ID key).
 * There is no meaning to the order of elements in the collection.
 * They contain a map called `records` that is a flat collection of CollectionData instances.
 * Collections may have a set of `pending` CD that are being prepared but have not been persisted. 
-* Collections are of one of two types: *complete* or *incomplete*. Complete collections can be client-side
-  processed-sorted, filtered, etc. 
 
 ### Collection Identity 
 
-Collections are stored in Javascript Maps; so anything that can be used as a Map key can be used to index collections. 
+the store's collections property is a map; each collection has a name, that defines
+where on the collections property it is kept.
+Anything that can be used as a Map key can be used to define the name of a collection. 
 
 ### Populating collections
 
-Collections are populated by executing queries (which in general are triggered by creating requests). 
-
-### CollectionData (CD for short)
-
-CollectionData is a wrapper around a unit of data that has details as to the context of that data. 
-CollectionData has these properties:
-
-* `identity`: a (generally scalar) unique identifier of its data
-* `reference`: a "temporary identity" for a record that has not been persisted. I.e., if a View is responsible for
-  creating a new article, the Article Collection might have articles with references to allow the view to refer to them. 
-  you may have BOTH reference and identity -- when for instance its legitimate for the client to create a record with 
-  a specific identity. transient CD's should be stored in views, not in Collections.
-* `data`: a nonempty value indicated information retrieved from a store.
-* `collection`: the name of the collection it is from. 
-* `recieved`: when (javascript timestamp) the record was last validated from the data source. If this field 
-   is 0/omitted, the data is assumed to be *transient* and not persisted. 
-* `status`: if the record is deleted, the timestamp at which deletion was requested. (can bet treated as boolean
-
-Any/many of these fields might not be set For instance when stored in a collection, 
-the collection's name may be left out. A CD of a collection might omit the collections' name, 
-and the ID (because it is obvious by context). 
+Collections are populated  -- externally -- by listeners that deconstruct answers into a series of record inserts
 
 ### Questions
 
@@ -117,7 +98,7 @@ Any pending Requests for a view whose state is set to done are cancelled.
 
 ## Status
 
-Various items can have one value for their status:
+Various elements can have one value for their status:
 
 * 'new': created; un-processed by any external system
 * 'working': a management system has read and taken responsibility for satisfying the target

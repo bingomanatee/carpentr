@@ -33,12 +33,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="56c2c9b8-0c79-48ee-bf3b-a8b88b89e5dc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/carpenter-redux/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carpenter-redux/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carpenter-redux/src/status.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carpenter-redux/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/carpenter-redux/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carpenter-redux/src/addTwo.js" beforeDir="false" afterPath="$PROJECT_DIR$/carpenter-redux/src/CarpentrRedux.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carpenter-redux/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/carpenter-redux/yarn.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/.eslintrc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/.idea/jsLinters/eslint.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/public/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/public/logo192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/public/logo512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/public/manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/public/robots.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/App.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/App.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/App.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/CarpentrListener.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/Users.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/connectApp.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/serviceWorker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/setupTests.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/storeFactory.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +70,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/carpenter-redux" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GithubDefaultAccount">
     <option name="defaultAccountId" value="4be33fde-76a4-46d5-b8ce-80e409bcb119" />
@@ -60,6 +84,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/carpenter-redux/src/views" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -67,6 +92,12 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/carpenter-redux/src/views" />
+      <recent name="$PROJECT_DIR$/carpenter-redux/src" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -92,5 +123,16 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="848" y="617" key="Github.ShareDialog" timestamp="1602092560307">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state x="848" y="617" key="Github.ShareDialog/0.23.2560.1417@0.23.2560.1417" timestamp="1602092560307" />
+    <state x="735" y="271" key="Github.UntrackedFilesDialog" timestamp="1602092573107">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state x="735" y="271" key="Github.UntrackedFilesDialog/0.23.2560.1417@0.23.2560.1417" timestamp="1602092573107" />
   </component>
 </project>
