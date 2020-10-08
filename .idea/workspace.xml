@@ -32,38 +32,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="56c2c9b8-0c79-48ee-bf3b-a8b88b89e5dc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/redux-test-app/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/.eslintrc.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/.idea/jsLinters/eslint.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/public/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/public/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/public/logo192.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/public/logo512.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/public/manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/public/robots.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/App.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/App.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/App.test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/CarpentrListener.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/Users.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/connectApp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/logo.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/serviceWorker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/setupTests.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/storeFactory.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-    </list>
+    <list default="true" id="56c2c9b8-0c79-48ee-bf3b-a8b88b89e5dc" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -108,6 +77,14 @@
       <option name="presentableId" value="Default" />
       <updated>1601934134289</updated>
     </task>
+    <task id="LOCAL-00001" summary="work in progress">
+      <created>1602196054354</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1602196054354</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -125,6 +102,10 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="work in progress" />
+    <option name="LAST_COMMIT_MESSAGE" value="work in progress" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="848" y="617" key="Github.ShareDialog" timestamp="1602092560307">
       <screen x="0" y="23" width="2560" height="1417" />
@@ -134,5 +115,9 @@
       <screen x="0" y="23" width="2560" height="1417" />
     </state>
     <state x="735" y="271" key="Github.UntrackedFilesDialog/0.23.2560.1417@0.23.2560.1417" timestamp="1602092573107" />
+    <state x="501" y="408" key="Vcs.Push.Dialog.v2" timestamp="1602196061963">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state x="501" y="408" key="Vcs.Push.Dialog.v2/0.23.2560.1417@0.23.2560.1417" timestamp="1602196061963" />
   </component>
 </project>
