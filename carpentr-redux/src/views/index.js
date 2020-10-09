@@ -29,8 +29,34 @@ export default () => createSlice({
       });
     },
     [VIEW_UPDATE]: (state, action) => {
-      const { uuid, update } = action.payload;
+      const { uuid, update, filter } = action.payload;
 
+      // either change all the views that meet a criteria ...
+      if (filter) {
+        if (!(typeof filter === 'function') || (filter === true)) {
+          throw new Error('filter must be true or a function');
+        }
+        const replacements = new Map();
+        state.forEach((baseView, viewUuid) => {
+          if (filter === true || filter(baseView)) {
+            const nextView = produce(baseView, update);
+            replacements.set(viewUuid, nextView);
+          }
+        });
+        let nextState = state;
+        replacements.forEach((nextView, viewUuid) => {
+          nextState = produce(nextState, (draft) => {
+            draft.set(viewUuid, nextView);
+          });
+        });
+        return nextState;
+      }
+
+      // ... or change a single view identified by uuid
+      if (!(uuid && typeof uuid === 'string')) {
+        console.log('view_update called with bad selector; uuid = ', uuid, 'filter = ', filter);
+        throw new Error('cannot update view without a string UUID (or filter)');
+      }
       const base = state.get(uuid);
       if (!base) {
         console.log('cannnot find view:', action);

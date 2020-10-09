@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 export default class CarpentrListener extends PureComponent {
   componentWillUnmount() {
     if (this._sub) {
-      this._sub.unsubscribe();
+      this._sub();
     }
   }
 

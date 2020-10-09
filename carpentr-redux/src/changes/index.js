@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import produce from 'immer';
 import {
-  NEW_QUESTION, NEW_REQUEST, UPDATE_REQUEST, UPDATE_QUESTION, NEW_ANSWER, UPDATE_ANSWER,
+  QUESTION_NEW, REQUEST_NEW, REQUEST_UPDATE, QUESTION_UPDATE, ANSWER_NEW, ANSWER_UPDATE,
 } from '../actions';
 import request from './request';
 import question from './question';
@@ -24,25 +24,25 @@ export default () => createSlice({
   initialState: produce(def, (draft) => draft),
   reducers: {
     // register a request and add it to the state
-    [NEW_REQUEST]: (state, action) => {
+    [REQUEST_NEW]: (state, action) => {
       const { view } = action.payload;
       if (!(view && (typeof view === 'string'))) {
         throw new Error('REQUEST requires a string view');
       }
       return addToMap(state, 'requests', request(action.payload));
     },
-    [UPDATE_REQUEST]: (state, action) => {
+    [REQUEST_UPDATE]: (state, action) => {
       return updateMap(state, 'requests', action.payload);
     },
 
-    [NEW_QUESTION]: (state, action) => {
+    [QUESTION_NEW]: (state, action) => {
       return addToMap(state, 'questions', question(action.payload));
     },
-    [UPDATE_QUESTION]: (state, action) => {
+    [QUESTION_UPDATE]: (state, action) => {
       return updateMap(state, 'questions', action.payload);
     },
 
-    [NEW_ANSWER]: (state, action) => {
+    [ANSWER_NEW]: (state, action) => {
       const myAnswer = answer(action.payload);
       const nextState = addToMap(state, 'answers', myAnswer);
       // note that the question has been answered.
@@ -51,7 +51,7 @@ export default () => createSlice({
         quest.answer = myAnswer.uuid;
       });
     },
-    [UPDATE_ANSWER]: (state, action) => {
+    [ANSWER_UPDATE]: (state, action) => {
       return updateMap(state, 'answers', action.payload);
     },
   },

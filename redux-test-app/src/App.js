@@ -1,18 +1,15 @@
 import React, { useEffect } from 'react';
+import stores from './store';
 import './App.css';
 import Users from './Users';
+import { connect } from 'react-redux';
 
-export default function App(props) {
-  const { actions, state } = props;
-  console.log('actions', actions, 'state', state, '------ props', props);
+const {
+  store, actions, mapStore, mapActions,
+} = stores;
 
-  useEffect(() => {
-    actions.collections.collectionSet({
-      collection: 'users', identity: 100, data: { id: 100, name: 'Bob' },
-    });
-    console.log('added bob');
-  }, []);
-
+const CUsers = connect(mapStore, mapActions)(Users);
+export default function App() {
   return (
     <div className="App">
       <header>
@@ -20,7 +17,7 @@ export default function App(props) {
       </header>
 
       <section>
-        <Users users={state.collections.get('users') || new Map()} />
+        <CUsers />
       </section>
     </div>
   );

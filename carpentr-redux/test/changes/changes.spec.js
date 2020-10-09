@@ -17,7 +17,7 @@ tap.test(p.name, (suite) => {
     const store = createStore(rootReducer);
 
     //  console.log('store: ', store);
-    store.dispatch(chInstance.actions[actions.NEW_REQUEST]({
+    store.dispatch(chInstance.actions[actions.REQUEST_NEW]({
       view: 'alpha',
       form: 'all users',
     }));
@@ -28,7 +28,7 @@ tap.test(p.name, (suite) => {
     tChanges.same(req.status, status.NEW);
     tChanges.same(req.form, 'all users');
 
-    store.dispatch(chInstance.actions[actions.UPDATE_REQUEST]({
+    store.dispatch(chInstance.actions[actions.REQUEST_UPDATE]({
       uuid: req.uuid,
       update: (newReq) => {
         newReq.status = status.DONE;
@@ -52,7 +52,7 @@ tap.test(p.name, (suite) => {
     const store = createStore(rootReducer);
 
     //  console.log('store: ', store);
-    store.dispatch(chInstance.actions[actions.NEW_REQUEST]({
+    store.dispatch(chInstance.actions[actions.REQUEST_NEW]({
       view: 'alpha',
       form: 'all',
       collection: 'users',
@@ -62,7 +62,7 @@ tap.test(p.name, (suite) => {
     const [req] = Array.from(currentSnapshot.changes.requests.values());
     ChQ.same(req.collection, 'users');
 
-    store.dispatch(chInstance.actions[actions.NEW_QUESTION]({
+    store.dispatch(chInstance.actions[actions.QUESTION_NEW]({
       request: req,
     }));
 

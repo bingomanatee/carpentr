@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { ReactReduxContext } from 'react-redux';
+import { connect, ReactReduxContext } from 'react-redux';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import storeFactory from './storeFactory';
-import connectApp from './connectApp';
+import stores from './store';
 import CarpentrListener from './CarpentrListener';
 
-const { store, actions } = storeFactory();
-const ConnectedApp = connectApp(App, store, actions);
+const {
+  store, actions, mapStore, mapActions,
+} = stores;
+
+const ConnectedApp = connect(mapStore, mapActions)(App);
 
 ReactDOM.render(
   <React.StrictMode>
