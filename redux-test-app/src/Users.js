@@ -62,7 +62,6 @@ export default ({ state, actions }) => {
     }
   }, [state.collections]);
 
-  console.log('rendering data with ', users)
   return (
     <Panel title="Users"
     >

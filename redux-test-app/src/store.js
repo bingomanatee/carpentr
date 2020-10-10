@@ -7,7 +7,7 @@ export default {
   actions,
   mapStore: (stateI) => ({ state: stateI }),
   mapActions: (dispatch) => {
-    const mergedActions = {};
+    const mergedActions = {__subscribe: (...args) => store.subscribe(...args)};
     Object.keys(actions).forEach((key) => {
       const actionGroup = actions[key];
       const group = {};

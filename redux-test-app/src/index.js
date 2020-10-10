@@ -14,15 +14,16 @@ const {
 } = stores;
 
 const ConnectedApp = connect(mapStore, mapActions)(App);
+const ConnectedListener = connect(mapStore, mapActions)(CarpentrListener);
 
 ReactDOM.render(
   <React.StrictMode>
     <ReactReduxContext.Provider value={{ store }}>
-      <CarpentrListener store={store} actions={actions}>
+      <ConnectedListener>
         <Grommet theme={demoTheme}>
           <ConnectedApp />
         </Grommet>
-      </CarpentrListener>
+      </ConnectedListener>
     </ReactReduxContext.Provider>
   </React.StrictMode>,
   document.getElementById('root'),

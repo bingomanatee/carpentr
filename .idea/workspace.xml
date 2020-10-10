@@ -20,24 +20,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="56c2c9b8-0c79-48ee-bf3b-a8b88b89e5dc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/Log.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/Panel.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/redux-test-app/src/demoTheme.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/carpentr-redux/makeUsers.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/carpentr-redux/src/constants.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/redux-test-app/src/carpenterProcesses.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carpentr-redux/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/carpentr-redux/lib/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/carpentr-redux/src/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/carpentr-redux/src/actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carpentr-redux/src/changes/answer.js" beforeDir="false" afterPath="$PROJECT_DIR$/carpentr-redux/src/changes/answer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/carpentr-redux/src/changes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/carpentr-redux/src/changes/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/carpentr-redux/src/changes/question.js" beforeDir="false" afterPath="$PROJECT_DIR$/carpentr-redux/src/changes/question.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carpentr-redux/src/collections/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/carpentr-redux/src/collections/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carpentr-redux/src/views/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/carpentr-redux/src/views/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carpentr-redux/src/views/view.js" beforeDir="false" afterPath="$PROJECT_DIR$/carpentr-redux/src/views/view.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carpentr-redux/test/changes/changes.spec.js" beforeDir="false" afterPath="$PROJECT_DIR$/carpentr-redux/test/changes/changes.spec.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/redux-test-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/redux-test-app/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/redux-test-app/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux-test-app/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carpentr-redux/src/changes/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/carpentr-redux/src/changes/request.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux-test-app/src/CarpentrListener.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux-test-app/src/CarpentrListener.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux-test-app/src/Log.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux-test-app/src/Log.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/redux-test-app/src/Users.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux-test-app/src/Users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux-test-app/src/connectApp.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux-test-app/src/connectApp.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/redux-test-app/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux-test-app/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/redux-test-app/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/redux-test-app/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux-test-app/src/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux-test-app/src/store.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +60,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JavaScript" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/carpenter-redux/src/views" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -78,6 +75,20 @@
       <recent name="$PROJECT_DIR$/carpenter-redux/src/views" />
       <recent name="$PROJECT_DIR$/carpenter-redux/src" />
     </key>
+  </component>
+  <component name="RunManager" selected="Node.js.makeUsers.js">
+    <configuration name="makeUsers.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/carpentr-redux/makeUsers.js" working-dir="$PROJECT_DIR$/carpentr-redux">
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch_14.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$APPLICATION_CONFIG_DIR$/scratches/scratch_14.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.makeUsers.js" />
+        <item itemvalue="Node.js.scratch_14.js" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -130,7 +141,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602197258099</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="work on Carpentr; no longer doing immer in store; using grommet/datatable for views">
+      <created>1602297850605</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1602297850605</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,7 +172,8 @@
     </ignored-roots>
     <MESSAGE value="work in progress" />
     <MESSAGE value="carpentr-redux.iml" />
-    <option name="LAST_COMMIT_MESSAGE" value="carpentr-redux.iml" />
+    <MESSAGE value="work on Carpentr; no longer doing immer in store; using grommet/datatable for views" />
+    <option name="LAST_COMMIT_MESSAGE" value="work on Carpentr; no longer doing immer in store; using grommet/datatable for views" />
   </component>
   <component name="WindowStateProjectService">
     <state x="848" y="617" key="Github.ShareDialog" timestamp="1602092560307">
@@ -165,6 +184,22 @@
       <screen x="0" y="23" width="2560" height="1417" />
     </state>
     <state x="735" y="271" key="Github.UntrackedFilesDialog/0.23.2560.1417@0.23.2560.1417" timestamp="1602092573107" />
+    <state width="2534" height="380" key="GridCell.Tab.0.bottom" timestamp="1602361141694">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="2534" height="380" key="GridCell.Tab.0.bottom/0.23.2560.1417@0.23.2560.1417" timestamp="1602361141694" />
+    <state width="2534" height="380" key="GridCell.Tab.0.center" timestamp="1602361141694">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="2534" height="380" key="GridCell.Tab.0.center/0.23.2560.1417@0.23.2560.1417" timestamp="1602361141694" />
+    <state width="2534" height="380" key="GridCell.Tab.0.left" timestamp="1602361141694">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="2534" height="380" key="GridCell.Tab.0.left/0.23.2560.1417@0.23.2560.1417" timestamp="1602361141694" />
+    <state width="2534" height="380" key="GridCell.Tab.0.right" timestamp="1602361141694">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="2534" height="380" key="GridCell.Tab.0.right/0.23.2560.1417@0.23.2560.1417" timestamp="1602361141694" />
     <state x="664" y="283" key="SettingsEditor" timestamp="1602197091865">
       <screen x="0" y="23" width="2560" height="1417" />
     </state>
@@ -173,6 +208,10 @@
       <screen x="0" y="23" width="2560" height="1417" />
     </state>
     <state x="501" y="408" key="Vcs.Push.Dialog.v2/0.23.2560.1417@0.23.2560.1417" timestamp="1602197264239" />
+    <state x="1010" y="175" width="1889" height="942" key="dock-window-1" timestamp="1602361147350">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state x="1010" y="175" width="1889" height="942" key="dock-window-1/0.23.2560.1417@0.23.2560.1417" timestamp="1602361147350" />
     <state x="1260" y="516" width="738" height="660" key="find.popup" timestamp="1602202483400">
       <screen x="0" y="23" width="2560" height="1417" />
     </state>

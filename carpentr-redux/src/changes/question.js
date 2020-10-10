@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { NEW, DONE } from '../status';
 
 export default (payload) => {
   const {
@@ -17,5 +18,6 @@ export default (payload) => {
   if (!q.collection && request.collection) {
     q.collection = request.collection;
   }
+  q.status = NEW;
   return q;
 };

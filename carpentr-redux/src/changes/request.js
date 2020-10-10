@@ -8,6 +8,7 @@ const basis = {
   view: null,
   form: null,
   uuid: null,
+  error: false
 };
 export default (payload) => produce(basis, (request) => {
   const { form, view, collection = null } = payload;

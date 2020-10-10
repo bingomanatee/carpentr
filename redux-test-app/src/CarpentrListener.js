@@ -1,21 +1,21 @@
 import React, { PureComponent } from 'react';
 
+import { requestsToActions, handleUsers } from './carpenterProcesses';
+
 export default class CarpentrListener extends PureComponent {
-  componentWillUnmount() {
-    if (this._sub) {
-      this._sub();
-    }
+
+  process() {
+    console.log('---------- respondingToChange: ----------');
+    requestsToActions(this.props.state.changes, this.props.actions);
   }
 
   componentDidMount() {
-    this._dispatch = this.props.store.dispatch;
-    this.actions = this.props.actions;
-    this._sub = this.props.store.subscribe(() => {
-      const value = this.props.store.getState();
-      // console.log('state value: ', value);
-    }, (err) => {
-      console.log('state error: ', err);
-    });
+    handleUsers(this.props);
+    this.process();
+  }
+
+  componentDidUpdate() {
+    this.process();
   }
 
   render() {
