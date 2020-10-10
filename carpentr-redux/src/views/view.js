@@ -8,9 +8,14 @@ const basis = {
   name: '',
   uuid: ''
 };
-export default (payload) => produce(basis, (view) => {
-  const { name, collection } = payload;
-  view.uuid = nanoid();
-  view.name = name;
-  if (collection) view.collection = collection;
-});
+
+const view = (payload) => {
+ if (payload.view) return view(payload.view);
+  const newView = {...basis};
+  newView.uuid = nanoid();
+  newView.name = payload.name;
+  if (payload.collection) newView.collection = payload.collection;
+  return newView;
+}
+
+export default view;

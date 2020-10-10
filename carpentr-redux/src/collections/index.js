@@ -17,18 +17,9 @@ export default () => createSlice({
       if (!(collection && (typeof collection === 'string'))) {
         throw new Error('COLLECTION_SET requires a string for collection name');
       }
-
-      // ensure the presence of named collection
-      const next = state.has(collection) ? state : produce(state, (nextState) => {
-        nextState.set(collection, new Map());
-      });
-
-      // set the data into the map that is a value of the root collection map;
-      const collectionMap = next.get(collection);
-      const nextCollectionMap = produce(collectionMap, (draft) => draft.set(identity, data));
-      return produce(next, (draft) => {
-        draft.set(collection, nextCollectionMap);
-      });
+      if (!state.has(collection)) state.set(collection, new Map());
+      state.get(collection).set(identity, data);
+      return state;
     },
   },
 });

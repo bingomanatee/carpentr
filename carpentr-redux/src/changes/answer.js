@@ -1,4 +1,3 @@
-import produce from 'immer';
 import { nanoid } from 'nanoid';
 import { DONE, ERROR } from '../status';
 
@@ -27,15 +26,17 @@ export default (payload) => {
     questionCollection = question.collection;
     questionForm = question.form;
   }
-  return produce(ANSWER, (ans) => {
-    ans.uuid = nanoid();
-    ans.question = questionUUID;
-    ans.q = question;
-    ans.response = response;
 
-    if (error) ans.status = ERROR;
+  const ans = { ...ANSWER };
+  ans.uuid = nanoid();
+  ans.question = questionUUID;
+  ans.q = question;
+  ans.response = response;
 
-    ans.form = questionForm;
-    ans.collection = questionCollection;
-  });
+  if (error) ans.status = ERROR;
+
+  ans.form = questionForm;
+  ans.collection = questionCollection;
+
+  return ans;
 };

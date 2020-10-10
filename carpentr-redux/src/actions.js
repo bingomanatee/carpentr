@@ -13,3 +13,4 @@ export const ANSWER_UPDATE = 'ANSWER_UPDATE';
 export const VIEW_NEW = 'VIEW_NEW';
 export const VIEW_UPDATE = 'VIEW_UPDATE';
 export const VIEW_DELETE = 'VIEW_DELETE';
+export const VIEW_CLOSE = 'VIEW_CLOSE';

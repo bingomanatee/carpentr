@@ -1,6 +1,4 @@
-import produce from 'immer';
 import { nanoid } from 'nanoid';
-
 
 export default (payload) => {
   const {
@@ -8,16 +6,16 @@ export default (payload) => {
     collection, // a string name of the collection
     form, // the information requested from the collection
   } = payload;
-  return produce({
+  const q = {
     collection, request: request.uuid, form,
-  }, (q) => {
-    q.uuid = nanoid();
-    // default absent properties to those of the request.
-    if (!q.form && request.form) {
-      q.form = request.form;
-    }
-    if (!q.collection && request.collection) {
-      q.collection = request.collection;
-    }
-  });
+  };
+  q.uuid = nanoid();
+  // default absent properties to those of the request.
+  if (!q.form && request.form) {
+    q.form = request.form;
+  }
+  if (!q.collection && request.collection) {
+    q.collection = request.collection;
+  }
+  return q;
 };

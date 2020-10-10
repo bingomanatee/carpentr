@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { connect, ReactReduxContext } from 'react-redux';
+import { Grommet } from 'grommet';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import stores from './store';
 import CarpentrListener from './CarpentrListener';
+import demoTheme from './demoTheme';
 
 const {
   store, actions, mapStore, mapActions,
@@ -17,7 +19,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ReactReduxContext.Provider value={{ store }}>
       <CarpentrListener store={store} actions={actions}>
-        <ConnectedApp />
+        <Grommet theme={demoTheme}>
+          <ConnectedApp />
+        </Grommet>
       </CarpentrListener>
     </ReactReduxContext.Provider>
   </React.StrictMode>,

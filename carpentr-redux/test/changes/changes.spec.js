@@ -35,6 +35,7 @@ tap.test(p.name, (suite) => {
       },
     }));
     const nextState = store.getState();
+    
     tChanges.same(nextState.changes.requests.size, 1);
     const [req2] = Array.from(nextState.changes.requests.values());
     tChanges.same(req2.status, status.DONE);
