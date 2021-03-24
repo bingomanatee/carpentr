@@ -4,7 +4,7 @@ const tap = require('tap');
 const p = require('../package.json');
 
 const {
-  requestFactory, REQUEST_STATUS_NEW, REQUEST_STATUS_WORKING, REQUEST_STATUS_FINISHED, REQUEST_STATUS_TIMEOUT,
+  requestFactory, REQUEST_STATUS_NEW, REQUEST_STATUS_WORKING, REQUEST_STATUS_ERROR, REQUEST_STATUS_FINISHED, REQUEST_STATUS_TIMEOUT,
 } = require('../lib/index');
 
 tap.test(p.name, (suite) => {
@@ -30,7 +30,7 @@ tap.test(p.name, (suite) => {
 
     rf.test('status transitions', (status) => {
       status.test('working and finished', (statusWF) => {
-        const request = requestFactory('alpha', { a: 1 });
+        const request = requestFactory('send', { a: 1 });
 
         statusWF.same(request.my.status, REQUEST_STATUS_NEW);
         request.do.setStatus(REQUEST_STATUS_WORKING);
@@ -41,7 +41,7 @@ tap.test(p.name, (suite) => {
       });
 
       status.test('a redaction to a bad status', (statusWF) => {
-        const request = requestFactory('alpha', { a: 1 });
+        const request = requestFactory('send', { a: 1 });
 
         statusWF.same(request.my.status, REQUEST_STATUS_NEW);
         request.do.setStatus(REQUEST_STATUS_WORKING);
@@ -51,12 +51,27 @@ tap.test(p.name, (suite) => {
           'cannot transition to Symbol(request-status-new) '
           + 'from Symbol(request-status-working)');
         statusWF.same(request.my.status, REQUEST_STATUS_WORKING);
-        request.do.setStatus(REQUEST_STATUS_FINISHED);
-        statusWF.same(request.my.status, REQUEST_STATUS_FINISHED);
         statusWF.end();
       });
 
       status.end();
+    });
+
+    rf.test('working', (wr) => {
+      const request = requestFactory('send', { a: 1 });
+      request.do.work();
+      wr.same(request.my.status, REQUEST_STATUS_WORKING);
+      wr.notOk(request.isStopped);
+      wr.end();
+    });
+
+    rf.test('fail', (failTest) => {
+      const request = requestFactory('send', { a: 1 });
+      request.do.work();
+      request.do.fail('404');
+      failTest.same(request.my.status, REQUEST_STATUS_ERROR);
+      failTest.same(request.my.out, '404');
+      failTest.end();
     });
 
     rf.end();

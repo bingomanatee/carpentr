@@ -1,9 +1,10 @@
 import {
-  addActions, ValueMapStream, A_NEXT, A_SET, e, E_COMPLETE, E_FILTER, Å,
+  addActions, ValueMapStream, A_NEXT, A_SET, e, E_COMPLETE, E_FILTER, E_INITIAL, Å,
 } from '@wonderlandlabs/looking-glass-engine';
 import { Subject } from 'rxjs';
 import { distinct } from 'rxjs/operators';
 import cloneDeep from 'lodash/cloneDeep';
+import produce from 'immer';
 import recordFactory from './recordFactory';
 import { ACTION_NEW_RECORD, ACTION_NEW_REQUEST, REQUEST_STATUS_NEW } from './constants';
 import requestFactory from './requestFactory';
@@ -13,15 +14,15 @@ export default (name, schema = {}, transport = false) => {
   const store = addActions(new ValueMapStream({
     schema,
     transport,
+    name,
     records: new Map(),
     requests: new Map(),
   }, { name }), {
     request(self, action, params, options) {
       const request = requestFactory(action, params, self.name, options);
       // console.log('---- request factory returned ', request);
-      self.fields.requests.addFieldSubject(request.name, request);
-      self.fields.requests.send(ACTION_NEW_REQUEST, request.value);
-      self.send(ACTION_NEW_REQUEST, request.value);
+      self.fields.requests.set(request.name, request);
+      self.send(ACTION_NEW_REQUEST, request);
       return request;
     },
     /**
@@ -31,31 +32,9 @@ export default (name, schema = {}, transport = false) => {
      * @returns {Subscription}
      */
     onRequest(self, handler) {
-      const stream = new Subject();
-      self.on((event) => {
-        stream.next(event.value);
+      return self.on((event) => {
+        handler(event.value);
       }, ACTION_NEW_REQUEST, E_COMPLETE);
-      const subject = stream.pipe(distinct((request) => request.name));
-
-      subject.subscribe({
-        error(er) {
-          console.log('error in subject:', er);
-        },
-        next(request) {
-          const { name } = request;
-          try {
-            const currentRequest = self.do.getRequest(name);
-            handler(currentRequest, self.do.getRequestStream(name), self);
-          } catch (err) {
-            self.error(e(err, {
-              name,
-              handler: handler.toString(),
-            }));
-          }
-        },
-      });
-
-      return subject;
     },
     getRequest(self, reqID) {
       if (self.my.requests.has(reqID)) {
@@ -80,7 +59,6 @@ export default (name, schema = {}, transport = false) => {
     },
     upsertRecord(self, identity, ...args) {
       if (self.do.hasRecord(identity)) {
-        console.warn('createRecord record -- ', identity, 'exists');
         return self.do.updateRecordProps(identity, ...args);
       }
       return self.do.createRecord(self, identity, ...args);
@@ -95,14 +73,18 @@ export default (name, schema = {}, transport = false) => {
       if (!evt.thrownError) {
         return self.fields.records.set(identity, evt.value);
       }
+      console.warn('createRecord error:', evt.thrownError);
+
       return evt;
     },
-    setRecord(self, identity, data) {
+    setRecord(self, identity, data, fast) {
       if (typeof identity === 'object' && !data) {
         return self.do.setRecord(identity.identity, identity);
       }
-      const { props, status = Å, meta = Å } = data;
-      return self.do.createRecord(identity, props, status, meta);
+      if (fast) {
+        return self.records.set(identity, data);
+      }
+      return self.fields.records.set(identity, new Record({ ...data, identity }));
     },
     createRecords(self, recordMap) {
       const trans = self.fields.records.trans(0);
@@ -123,31 +105,30 @@ export default (name, schema = {}, transport = false) => {
           });
         }
       } catch (err) {
-        console.log('error creating records:', err);
         trans.error(err);
         throw err;
       }
     },
     updateRecord(self, identity, data) {
       if (typeof data === 'function') return self.do.mutateRecord(identity, data);
+
       if (!self.do.hasRecord(identity)) {
         throw new Error(`update: no existing record ${identity}`);
       }
-
-      self.do.mutateRecord(identity, (record) => new Record({ ...record, ...data }));
+      return self.do.mutateRecord(identity, (record) => produce(record, (draft) => new Record({ ...draft, ...data, identity })));
     },
     updateRecordProps(self, identity, change, exclusive) {
       if (!self.do.hasRecord(identity)) {
         throw new Error(`update: no existing record ${identity}`);
       }
 
-      return self.do.mutateRecord(identity, (record) => {
+      return self.do.mutateRecord(identity, (record) => produce(record, (draft) => {
         if (typeof change === 'function') {
-          record.props = change(record.props, record, store);
+          draft.props = change(draft.props, draft, store);
         } else if (typeof change === 'object') {
-          record.props = exclusive ? { ...change } : { ...record.props, ...change };
+          draft.props = exclusive ? { ...change } : { ...draft.props, ...change };
         }
-      });
+      }));
     },
     updateRecordMeta(self, identity, key, value) {
       return self.do.updateRecordMetas(identity, key, value);
@@ -157,69 +138,119 @@ export default (name, schema = {}, transport = false) => {
         throw new Error(`update: no existing record ${identity}`);
       }
 
-      return self.do.mutateRecord(identity, (record) => {
+      return self.do.mutateRecord(identity, (record) => produce(record, (draft) => {
         if (typeof metas === 'object') {
-          record.meta = { ...record.metas, ...metas };
+          draft.meta = { ...draft.meta, ...metas };
         } else if ((typeof metas === 'string') && (value !== Å)) {
-          record.meta[metas] = value;
+          draft.meta[metas] = value;
         }
-      });
+      }));
     },
     updateRecordStatus(self, identity, status) {
       if (!self.do.hasRecord(identity)) {
         throw new Error(`update: no existing record ${identity}`);
       }
 
-      return self.do.mutateRecord(identity, (record) => {
-        record.status = status;
-      });
+      return self.do.mutateRecord(identity, (record) => produce(record, (draft) => {
+        draft.status = status;
+      }));
     },
     mutateRecord(self, identity, mutator) {
       if (typeof mutator !== 'function') throw new Error('mutateRecord - passed non functional mutator');
       if (!self.do.hasRecord(identity)) {
         throw new Error(`update: no existing record ${identity}`);
       }
-      let newRecord = new Record(self.do.record(identity));
+      let newRecord = self.do.record(identity);
       try {
-        const change = mutator(newRecord);
-        if (change) newRecord = change;
+        newRecord = produce(newRecord, mutator);
       } catch (err) {
         console.log('mutation error: ', newRecord, 'mutator:', mutator.toString(), 'subject: ', self);
         throw err;
       }
-      return self.fields.records.set(identity, mutator(newRecord) || newRecord);
+      return self.fields.records.set(identity, newRecord);
     },
     hasRecord(self, identity) {
       return self.my.records.has(identity);
     },
     removeRecord(self, identity) {
+      const existing = self.do.record(identity);
+      if (!existing) return null;
       // note -- self should be called AFTER a status update of a record to deleted has been communicated
       self.my.records.delete(identity);
+      return existing;
     },
     record(self, identity) {
       return self.my.records.get(identity);
     },
+    r(self, identity) {
+      return self.do.record(identity);
+    },
 
+    /**
+     * "new" in this context is new to the collection...
+     * @param self
+     * @param handler
+     */
     onNewRecord(self, handler) {
       if (!(typeof handler === 'function')) {
         throw new Error(`store ${self.name}requires functional handler for onNewRecord`);
       }
-
+      const appliedTo = new Set();
+      function purge() {
+      }
+      function tryRecord(record, event) {
+        if (!appliedTo.has(record.tag)) {
+          appliedTo.add(record.tag);
+          if (appliedTo.size > 100) purge();
+          const newRecord = handler(record, event, self);
+          if (newRecord && record !== newRecord) {
+            event.next(newRecord);
+          }
+          return true;
+        }
+        return false;
+      }
       self.on((event) => {
-        handler(event.value, event, self);
+        const record = event.value;
+
+        tryRecord(record, event);
       }, ACTION_NEW_RECORD, E_FILTER);
+
+      // console.log('self for onNewRecord:', [...self.fieldSubjects.entries()]);
+
+      if (self.fields.records) {
+        self.fields.records.onField((event) => {
+          const recordMap = event.value;
+          recordMap.forEach((record) => {
+            if (event.isStopped) return;
+            try {
+              tryRecord(record, event, self);
+            } catch (err) {
+              if (!event.isStopped) event.error(err);
+            }
+          });
+        }, () => true);
+      }
     },
   });
 
   const recordStream = new ValueMapStream({
   }, { name: `${store.name}-records` });
-
-  store.do.onNewRecord((record) => {
-    record.meta.originalProps = { ...record.props };
-  });
-
   store.addFieldSubject('records', recordStream);
   store.addFieldSubject('requests', new ValueMapStream({}));
+  store.fields.records.on((evt) => {
+    const map = evt.value;
+    map.forEach((r, i) => {
+      if (!(r instanceof Record)) {
+        r.identity = i;
+        map.set(i, new Record(r));
+      }
+    });
+  }, A_SET, E_INITIAL);
+
+  store.do.onNewRecord((record) => produce(record, (draft) => {
+    draft.meta.originalProps = { ...record.props };
+  }));
 
   return store;
 };
