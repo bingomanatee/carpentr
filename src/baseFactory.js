@@ -14,11 +14,9 @@ export default (name, transport) => {
         self.fields.stores.set(storeName, storeFactory(storeName, ...args));
       },
       store(self, storeName) {
-        console.log('structure: ', self.object);
         return self.my.stores.get(storeName);
       },
       createRecord(self, storeName, ...args) {
-        console.log('creating record', args, 'in', storeName);
         return self.my.stores.get(storeName).do.createRecord(...args);
       },
       r(self, storeName, ...args) {
