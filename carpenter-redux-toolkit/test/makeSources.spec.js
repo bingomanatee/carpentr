@@ -43,34 +43,34 @@ describe('carpenter-redux-toolkit', () => {
       expect(withStoreState.sources.has('users')).toBeTruthy();
     });
 
-    describe('set', () => {
+    describe('setSourceKeyVal', () => {
       const slice = makeSources();
-      const afterAddingMittens = slice.reducer({ sources: new Map() }, slice.actions.set({
+      const afterAddingMittens = slice.reducer({ sources: new Map() }, slice.actions.setSourceKeyVal({
         source: 'kittens', key: 'Mittens', value: { age: 0.5 }
       }));
 
       expect(afterAddingMittens.sources.get('kittens').get('Mittens').age).toBe(0.5);
     });
 
-    describe('del', () => {
+    describe('delSourceKey', () => {
       const slice = makeSources();
-      let state = slice.reducer({ sources: new Map() }, slice.actions.set({
+      let state = slice.reducer({ sources: new Map() }, slice.actions.setSourceKeyVal({
         source: 'kittens', key: 'Mittens', value: { age: 0.5 }
       }));
-      state = slice.reducer(state, slice.actions.set({
+      state = slice.reducer(state, slice.actions.setSourceKeyVal({
         source: 'kittens', key: 'Furry', value: { age: 1 }
       }));
-      state = slice.reducer(state, slice.actions.set({
+      state = slice.reducer(state, slice.actions.setSourceKeyVal({
         source: 'kittens', key: 'Doug', value: { age: 2 }
       }));
 
       expect(state.sources.get('kittens').size).toBe(3);
-      state = slice.reducer(state, slice.actions.del({ source: 'kittens', key: 'Furry' }));
+      state = slice.reducer(state, slice.actions.delSourceKey({ source: 'kittens', key: 'Furry' }));
       expect(state.sources.get('kittens').size).toBe(2);
       expect(state.sources.get('kittens').has('Furry')).toBeFalsy();
 
       // validate you can pass a missing key in without throwing.
-      state = slice.reducer(state, slice.actions.del({ source: 'kittens', key: 'Furry' }));
+      state = slice.reducer(state, slice.actions.delSourceKey({ source: 'kittens', key: 'Furry' }));
       expect(state.sources.get('kittens').size).toBe(2);
     });
 
@@ -92,7 +92,7 @@ describe('carpenter-redux-toolkit', () => {
 
                 requestAnimationFrame(() => {
                   const kitten = remoteKittens.get(kittenKey);
-                  state = slice.reducer(state, slice.actions.set({
+                  state = slice.reducer(state, slice.actions.setSourceKeyVal({
                     source: 'kittens',
                     key: kittenKey,
                     value: kitten

@@ -88,7 +88,7 @@ export default function (nameKey = 'sources') {
           }
         });
       },
-      set(state, action) {
+      setSourceKeyVal(state, action) {
         const { payload } = action;
         const { source: sourceKey, value } = payload;
         if (!state.sources.has(sourceKey)) {
@@ -97,7 +97,7 @@ export default function (nameKey = 'sources') {
 
         state.sources.get(sourceKey).set(kn(payload), value);
       },
-      del(state, action) {
+      delSourceKey(state, action) {
         const { payload } = action;
         if (!state.sources.has(payload.source)) {
           console.warn('attempt to remove a record from non-existent source: ', +payload.sources);
