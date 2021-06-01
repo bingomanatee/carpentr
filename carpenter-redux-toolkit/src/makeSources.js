@@ -13,7 +13,7 @@ export default function (nameKey = 'sources') {
       quests: new Subject()
     },
     reducers: {
-      add(state, action) {
+      addSource(state, action) {
         const k = kn(action.payload);
         if (state.sources.has(k)) {
           throw new Error('cannot redefine source ' + k);
