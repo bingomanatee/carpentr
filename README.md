@@ -1,20 +1,9 @@
 # CARPENTR
 
 Carpenter is an attempt to create a homogenous record system for information
-transfer, based on (loosely) the REST paradigm. Records are kept in stores,
-which are grouped in baseFactory. Applications can subscribe to individual records,
-or entire stores, for updates to record content, or can submit requests to get, delete or
-change data. 
+transfer. 
 
-Carpentr is based on the Looking Glass engine which in turn is RxJS based, so 
-all (nearly) elements are Observable. (records being the most numerous content
-are not themselves directly observable, but are contained in an observable field
-called records, which can be subscribed/filtered). 
-
-Stores also contain requests which can be watched for and responded to. 
-By seperating the request and response into obserable actions you can switch on 
-one set of watchers for production and a second mock set of watchers for testing
-the system. 
+It is a monorepo because it manages the same architectural system in multiple patterns. 
 
 ## The Name
 
@@ -32,78 +21,155 @@ Carpentr is named after the character in *Alice in Wonderland*:
     In 'alf a year
     If you don't mind the work
 
-# Carpentr Classes
+## The pattern
 
-## Store
+The most fundamental pattern of Carpentr is this: a **client** asks for **data** contained in a **source**. 
+The response is either the data, or an asychnronous structure that returns the data -- or an error if the data is irretrivable. 
 
-Stores are produced by the storeFactory function; they are a LGE ValueMapStream. 
-Stores are NOT intended to *directly* make REST requests; its not even an 
-assumption that the store IS REST baseed. To interact with a remote system,
-intercept requests and satisfy them externally. 
+### Sources
 
-### A note on Records
+Sources are collections of information. They are often local proxies for remote data stores -- "sources of truth."
 
-Records are a minimal glob of data. There are only three requirements for records:
+Sources have both methods to retrieve data and caches of the data that have been retrieved. 
 
-1. They must have a distinct *identity* (id) value -- a primary key of some sort -- in order for them
-   to be referenced by the system. If for some reason you cannot or do not want them to have an
-   identity, manage them outside of the Store until they do. (i.e., you can create a record on your own
-   with identity === null but don't try submitting it into the store until it has a unique identity)
-   
-2. They must have a props Object describing their value; a standard key/value javascript object. 
-   if your data is complex or in another form, nest it into an object; i.e., if you want the data to
-   be a plain text blurb define it as `{text: 'This is my value'}`
-3. They must have a status that is one of the Record statuses in Constants. Any record that comes to'
-   the store should be marked as RECORD_STATUS_PERSISTED. 
-4. Any data that is not stored in the remote system should be kept in the `meta` property. For instance if you 
-   have a list of items in a select field, you might mark one (or more) of them as "selected"
-   
-Records are Immer drafts; they are not directly mutable. If you want to modify a record you must 
-set it with immer produce (exposed by this module) or define a new record with different props
-and call `myStore.do.setRecord(identity, newRecord)`. 
+#### Data
 
-For those not up to what Immer is, assume the records to be under `Object.freeze`; all its values
-are read-only
+Data has no limitations, by definition. It can be 
 
-### fields
+* Strict and uniform (with a schema) or "messy" (no fixed schema) 
+* in any form or structure - classes, POJO, strings, arrays
 
-fields are accessed off the `store.my` proxy. (store.my.records) 
+The easiest data to work with in general has 
 
-* **records**: `records` is itself a ValueMapStream of records, mapped by identity. 
-* **requests**: `requests` is a ValueMapStream as well, of `Request` streams. (note: request streams 
-  DO NOT update the storeFactory directly as they change;
-* **schema** (optional) `schema` exists as a utility to store whatever system you use to
-  enforce consistent value in records. 
-* **transport** (optional) `transport` exists to store whatever function/class you use
-  to send requests back and forth to your backend. 
-* **name** the identifier for the store, for convenience. also stored as the `.name` property
-  of the store.
+* a defined schema 
+* is composed of scalar values 
+* can pass the "Can I JSON.stringify() it" test (i.e, no loopy references or problematic stuff like DOM elements)
+
+#### Keys
+Things in Carpenter have keys, or IDs. Keys are:
+* simple -- usually scalar: strings, numbers, or forms that can be expressed
+* have the same lifespan as the data itself, and are unique in the population of the Data.
+* uniquely identify a subject in a given space. 
+* are singular; This generally means that a subject has one and only one key, but
+  keys *always* have one and only one subject.
+* are permanent; subjects' keys don't change, even if the subject does, and keys are not reusable; i.e., an array index
+  is *a poor key* for imformation as arrays are mutable. 
   
-### methods
-  
-methods are called from the `store.do` proxy (eg, `mystore.do.request('get', 2)`)
-note- this code intentionally makes it difficult to change the identity of a
-record from the one that it is keyed by. 
+All the entities named below have keys. 
 
-* **`request(action: string, params: any?, options?)): Request`**:
-  injects a request into the request collection and triggers an ACTION_NEW_REQUEST event
-*  **`onRequest(handler: function): Observer`**:
-  registers a listener to respond to any new requests. As it returns an observer, the
-   watcher can be cancelled by calling observer.complete() at any time. 
-   This method is how you translate a request into a network call. 
-* **`getRequest(uuid: string): Request`** gets a request by its UUID.
-* **`hasRequest(uuid:string): boolean`**:  determines if a request is registered by an ID
-* ** `upsertRecord(identity, props: object, status: Symbol?, meta: object?)`**:
-  creates or updates a record. If the record exists, it updates its props -- only.
-* ** `createRecord(identity, props: object, status: Symbol?, meta: object?)`**:
-  creates or updates a record. If the record exists, it updates its props -- only.
-* ** `createRecords(records: Map)`**: create a series of records in one action; transactionally locked. 
-* ** `updateRecord(identity, dataOrFn)`**: updates a record by setting a number of fields with a
-  pojo, or a mutataor function
-* **`mutateRecord(identity, fn): event`**: replaces a record with a new draft,
-  based on the identity function. (see Immer)
-* **`hasRecord(identity): boolean`**: tests if an identity is registered 
-  locally in the store. 
-* **`removeRecord(identity) Record`** deletes a record locally; returns it 
-  (if it were present).
-* ** `record | r(identity)`**: returns a record (if present) from the local store.
+#### Data Maps
+
+Sources store data based on the following assumptions
+
+* Data is delivered in units of information that in the remote source of truth are identified keys
+* Quests provide answers in the form of key(s) that point to Sources -- not data itself. 
+
+When the data is returned, what is fed back to the request is the key, which is stored locally. This means that any time
+the data changes (or is deleted) the clients will receive an update.
+
+In general the assumption is that the order of storage in s source is meaningless -- if there is an order, it is
+part of the result  of a quest. 
+
+Sources themselves have an identifying key.
+
+#### Quests
+
+Quests are expressions of a need of data on the part of a Client. They may be solved by HTTP (Requests) or a reduction of data
+that is already present in stores (filters). A quest can be:
+
+1. A request for data, raw, formatted or aggregated. 
+2. A change request -- remote insertion, deletion, updating of data.
+3. A transmission -- acknowledgement of receipt, or anything else that is not 1 or 2.
+
+Quests may be stored as data -- or may be a functional concept that is passed through hook or promise-patterns to the caller. 
+
+Quests are *messages* designed to trigger updates both to the store and the remote source APIs. 
+They have the following properties:
+
+* key (a nanoid string)
+* question - a value meaningful to the responding hooks
+* answer - documents the result of any activity that hooks have taken to resolve the quest
+* meta - any annotations such as pagination cursors that were returned from the source of truth
+
+If the need for answer and meta are unclear, consider that the raw HTTP response is one candidate for the answer field,
+and it is filtered into a cleaner application friendly format in meta. 
+
+##### A basic example
+
+* A client 'user_panel' wants to get information about user 100; the panel emits a quest by calling:
+
+```javascript
+
+sources.quest({source: 'users', key: 100, $cb: (quest) => {
+// questValue is going to be a copy of the latest known version of the quest before it completed/errored out.
+// because BehaviorSubjects have no retrivable value after they have completed 
+// its the best way to get the "current" value of the quest. 
+    let questValue;
+    const sub =  quest.subscribe({
+      next(q) {
+        questValue = q;
+        if (q.status === QS_COMPLETED) {
+          console.log('quest has been completed: ', q.answer);
+          sub.unsubscribe();
+        }
+      },
+      error(e) {
+        console.log('oh no! error in asking', questValue.question, ':', e.message);
+      },
+    });
+  }});
+```
+
+* a subscriber to the quests streams makes a call to the Users API. It also updates the quest to status `QS_WORKING`
+
+* That subscriber recieves a response with user data
+
+* The subscriber calls an action to inject user 100's data into the Users source. 
+
+* The subscriber updates the quests's data / metadata to note that user 100 has been updated, 
+  by calling `quest.finish({source: 'users', key: 100})`.
+
+* This advanced the quest to state "QS_RETURNED" then to "QS_COMPLETED". 
+
+* with the final state, the callback is notified that the quest has been resolved, and performs whatever view updates
+  are relevant with the new user data from the source. 
+  
+##### Questions
+
+Questions are configuration options. They can be REST-like: `{source: 'users', method: "get", id: 100}` or any other 
+form that is meaningful to your handlers. 
+
+##### Answers
+
+The form of the answer again, is that which is meaningful to the subscribers to the quest.
+Answers are ultimately *commentary* -- the quest triggers change to the store, and the answer to the quest 
+is a manifest summary of that work. Ultimately the purpose of a quest is to trigger updates; the library itself doesn't 
+react to the form or content of any quest's answer. 
+
+Here are a few *suggested* forms the answer could take. 
+
+1. A Data: `{data: key, source: sourceId, form: 'ONE_DATA'}` one record. 
+2. A SourceSet: `{data: [key, ...key], source: sourceId, form: 'SOURCE_DATA'}` 0+ records from a single source.
+3. A SourceSetList: `{data: [[sourceKey, [key, key, key]], ...[sourceKey, [key, key, key]]], form: 'SOURCE_LIST'}`, multi-source data
+4. An Error: `{data: string, errorData? any form: 'ERROR'}` can be a trapped/thrown error or a remote message describing the failure;
+
+It is assumed that by the time the quest has been finished, the sources' caches have also been updated with any data provided by the quest, which 
+the client can then retrieve from the source if needed. 
+
+Another interpretation: the "answer" can be a raw body response. That response is refined by handlers into a form -- put into meta -- that is meaningful to your application.
+That way if you suspect your filters are misbehaving, answer will always have the full HTTP response for you to examine and compare against meta. 
+
+#### Clients 
+
+A client is a very broad and general use structure. It can be mapped to a view. It may (or may not) have values that aren't in caches. 
+Clients are identified by keys. They are stored flatly, but can be organized with local inter-client references. 
+
+As far as Carpenter only two things are important: 
+
+1. Quests are made on behalf of clients
+2. If a client is removed, the Quest does not need to be complete.
+
+Other than a name, clients have no defined features or schema. 
+They may be complex stores, or simply references for a pub-sub system. 
+One important utility clients provide is that when editing data, clients can keep local copies of the edits for use in a future Quest.
+A client is not bound to any specific sources and should not copy / denormalize source data. 

@@ -6,7 +6,8 @@
     "node": true,
     "browser": true,
     "mocha": true,
-    "mongo": true
+    "mongo": true,
+    "es5": true
   },
   "rules": {
     "max-len": [2, { "code": 120 }],
